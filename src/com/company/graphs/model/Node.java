@@ -7,45 +7,45 @@ import java.util.Map;
 
 public class Node {
 
-    private Long number;
+    private Integer number;
 
-    private Long distance = Long.MAX_VALUE; // distance from source value
+    private Integer distance = Integer.MAX_VALUE; // distance from source value
 
-    Map<Node, Long> adjacentNodes = new HashMap<>();
+    Map<Node, Integer> adjacentNodes = new HashMap<>();
 
     private List<Node> shortestPath = new LinkedList<>();
 
 
-    public Node(Long number){
+    public Node(Integer number){
         this.number = number;
     }
 
 
-    public Long getNumber() {
+    public Integer getNumber() {
         return number;
     }
 
-    public void setNumber(Long number) {
+    public void setNumber(Integer number) {
         this.number = number;
     }
 
-    public Long getDistance() {
+    public Integer getDistance() {
         return distance;
     }
 
-    public void setDistance(Long distance) {
+    public void setDistance(Integer distance) {
         this.distance = distance;
     }
 
-    public Map<Node, Long> getAdjacentNodes() {
+    public Map<Node, Integer> getAdjacentNodes() {
         return adjacentNodes;
     }
 
-    public void addDestinationNode(Node destination, long distance) {
+    public void addDestinationNode(Node destination, Integer distance) {
         adjacentNodes.put(destination, distance);
     }
 
-    public void setAdjacentNodes(Map<Node, Long> adjacentNodes) {
+    public void setAdjacentNodes(Map<Node, Integer> adjacentNodes) {
         this.adjacentNodes = adjacentNodes;
     }
 

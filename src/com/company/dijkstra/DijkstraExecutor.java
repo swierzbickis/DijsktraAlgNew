@@ -3,6 +3,7 @@ package com.company.dijkstra;
 import com.company.graphs.model.Graph;
 import com.company.graphs.builders.GraphBuilder;
 import com.company.graphs.model.Node;
+import com.company.helpers.TimerHelper;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -12,18 +13,21 @@ import java.util.List;
  */
 public class DijkstraExecutor {
 
-    public  void executeDijkstra(List<Long> primeNumbers){
+    public  void executeDijkstra(List<Integer> primeNumbers){
 
-
+        long startTime = System.currentTimeMillis();
         Graph dijsktraGraph = GraphBuilder.buildGraph(primeNumbers);
+        TimerHelper.printTime(startTime);
 
-        dijsktraGraph = DijsktraCalculator.calculateShortestPathFromSrc(dijsktraGraph, dijsktraGraph.getNodes().get(0));
+        startTime = System.currentTimeMillis();
+        dijsktraGraph = DijsktraCalculator.calculateShortestPathFromSrc(dijsktraGraph, dijsktraGraph.getNodes().get(1));
+        TimerHelper.printTime(startTime);
         dijsktraGraph.getNodes();
 
     }
 
     private  void setNodeAdjacents(Node n,List<Node> graphNodes){
-        long i=0;
+        Integer i=0;
         for(Node node : graphNodes) {
             n.addDestinationNode(node,i++);
         }
@@ -31,12 +35,12 @@ public class DijkstraExecutor {
 
     public  void dijkstraTest(){
 
-        Node nodeA = new Node(1l);
-        Node nodeB = new Node(2l);
-        Node nodeC = new Node(3l);
-        Node nodeD = new Node(4l);
-        Node nodeE = new Node(5l);
-        Node nodeF = new Node(6l);
+        Node nodeA = new Node(1);
+        Node nodeB = new Node(2);
+        Node nodeC = new Node(3);
+        Node nodeD = new Node(4);
+        Node nodeE = new Node(5);
+        Node nodeF = new Node(6);
 
         nodeA.addDestinationNode(nodeB, 10);
         nodeA.addDestinationNode(nodeC, 15);
@@ -71,16 +75,16 @@ public class DijkstraExecutor {
 
     public  void dijkstraTest2(){
 
-        Node node01 = new Node(01l);
-        Node node41 = new Node(41l);
-        Node node43 = new Node(43l);
-        Node node47 = new Node(47l);
-        Node node53 = new Node(53l);
-        Node node61 = new Node(61l);
-        Node node67 = new Node(67l);
-        Node node71 = new Node(71l);
-        Node node73 = new Node(73l);
-        Node node79 = new Node(79l);
+        Node node01 = new Node(01);
+        Node node41 = new Node(41);
+        Node node43 = new Node(43);
+        Node node47 = new Node(47);
+        Node node53 = new Node(53);
+        Node node61 = new Node(61);
+        Node node67 = new Node(67);
+        Node node71 = new Node(71);
+        Node node73 = new Node(73);
+        Node node79 = new Node(79);
 
         node43.addDestinationNode(node41, 4);
         node43.addDestinationNode(node53,1);

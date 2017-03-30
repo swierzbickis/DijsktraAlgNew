@@ -20,19 +20,16 @@ public class EdgeBuilder {
      */
     public  static void buildEdge(Node srcNode, Node destNode){
 
-        LinkedList<Long> srcNodeDigits = returnNumberAsDigits(srcNode.getNumber());
-        LinkedList<Long> destNodeDigits = returnNumberAsDigits(destNode.getNumber());
+        LinkedList<Integer> srcNodeDigits = returnNumberAsDigits(srcNode.getNumber());
+        LinkedList<Integer> destNodeDigits = returnNumberAsDigits(destNode.getNumber());
 
 
-//        for(int i=0;i<srcNodeDigits.size();i++){
-//            System.out.println(srcNodeDigits.get(i));
-//        }
-//
-//        System.out.println("");
-//
-//        for(int i=0;i<destNodeDigits.size();i++){
-//            System.out.println(destNodeDigits.get(i));
-//        }
+        if(srcNodeDigits.size() != destNodeDigits.size()){
+            setNumberPadding(srcNodeDigits,destNodeDigits);
+        }
+
+
+
         int notEqDigitsCounter =0;
         int diffDigitIndex = 0;
         for(int i=0;i<srcNodeDigits.size();i++){
@@ -43,29 +40,28 @@ public class EdgeBuilder {
                     return;
                 }
                 diffDigitIndex = i;
-                System.out.println("NOT EQUAL: " + srcNodeDigits.get(i) + " " +destNodeDigits.get(i) );
+                //System.out.println("NOT EQUAL: " + srcNodeDigits.get(i) + " " +destNodeDigits.get(i) );
             }
         }
-        Long edgeWeight = countEdgeWeight(srcNodeDigits,destNodeDigits,diffDigitIndex);
+        Integer edgeWeight = countEdgeWeight(srcNodeDigits,destNodeDigits,diffDigitIndex);
         srcNode.addDestinationNode(destNode,edgeWeight);
-        System.out.println("EDGE WEIGHT: " + edgeWeight);
+        //System.out.println("EDGE WEIGHT: " + edgeWeight);
 
     }
 
 
-    private  static LinkedList<Long> returnNumberAsDigits(Long number){
+    private  static LinkedList<Integer> returnNumberAsDigits(Integer number){
 
         // = and int
-        LinkedList<Long> digitsList = new LinkedList<Long>();
-
+        LinkedList<Integer> digitsList = new LinkedList<Integer>();
         while (number > 0) {
             digitsList.push( number % 10 );
             number = number / 10;
         }
 
-        if(digitsList.size()<ZERO_PREFIX_DIGIT_NUMBER && number<MULTIPLE_PREFIX_DIGIT_NUMBER){ //Adds 0 in front of number in case of number is less than 10
-            digitsList.push(0l);
-        }
+//        if(digitsList.size()<ZERO_PREFIX_DIGIT_NUMBER && number<MULTIPLE_PREFIX_DIGIT_NUMBER){ //Adds 0 in front of number in case of number is less than 10
+//            digitsList.push(0l);
+//        }
         return digitsList;
 
     }
@@ -73,25 +69,29 @@ public class EdgeBuilder {
 
     /**
      * If one of the nodes  has less number of digits, it should get new padding value.
-     * @param srcNodeDigits
-     * @param destNodeDigits
+     * @param //srcNodeDigits
+     * @param //destNodeDigits
      * @return
      */
-    private LinkedList<Long>  setNumberPadding(LinkedList<Long> srcNodeDigits,LinkedList<Long> destNodeDigits){
+    private static void  setNumberPadding(LinkedList<Integer> srcNodeDigits,LinkedList<Integer> destNodeDigits) {
 
-        Long destMostSigDigit = destNodeDigits.get(0);
-        Long srcMostSigDigit = srcNodeDigits.get(0);
+        if (srcNodeDigits.size() > destNodeDigits.size()){
+            int paddingSize =   (srcNodeDigits.size() - destNodeDigits.size()) ;
 
-        if( Math.abs( ( destMostSigDigit - srcMostSigDigit ) ) % 10 == 0 ){
+            for(int i=0;i<paddingSize;i++){
+                destNodeDigits.push(0);
+            }
 
-            if(destMostSigDigit > srcMostSigDigit) {
-                srcNodeDigits.push(0l);
-            }else{
-                destNodeDigits.push(0l);
+        }else{
+
+            int paddingSize =  (destNodeDigits.size() - srcNodeDigits.size()) ;
+
+            for(int i=0;i<paddingSize;i++){
+                srcNodeDigits.push(0);
             }
 
         }
-        return  destNodeDigits; //to be fixed . It should be sometimes dest or src node Digits
+
     }
 
 
@@ -103,16 +103,19 @@ public class EdgeBuilder {
         }
     }
 
-    private static  Long countEdgeWeight( LinkedList<Long> srcNodeDigits,LinkedList<Long> destNodeDigits,int diffIndx ){
+    private static  Integer countEdgeWeight( LinkedList<Integer> srcNodeDigits,LinkedList<Integer> destNodeDigits,int diffIndx ){
 
-        Long srcDigit = srcNodeDigits.get(diffIndx);
-        Long destDigit = destNodeDigits.get(diffIndx);
+        Integer srcDigit = srcNodeDigits.get(diffIndx);
+        Integer destDigit = destNodeDigits.get(diffIndx);
 
-        Long digitDiff = Math.abs((srcDigit-destDigit));
+        Integer digitDiff = Math.abs((srcDigit-destDigit));
 
-        BigInteger bi = BigInteger.valueOf(digitDiff);
-        bi = bi.pow(2);
-        Long edgeWeight = bi.longValue();
+        //In case of 9 -> 0 converts
+        if(digitDiff >5){
+            digitDiff = 10 - digitDiff;
+        }
+
+        Integer edgeWeight = digitDiff * digitDiff;
 
         return edgeWeight;
     }

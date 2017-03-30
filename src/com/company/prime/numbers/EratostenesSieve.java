@@ -1,63 +1,67 @@
 package com.company.prime.numbers;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Sebek on 2017-03-25.
  */
 public class EratostenesSieve {
 
-    private static Long ZERO =0l;
+    private static final int MIN_PRIME_NUMBER =2;
+    private static final int NON_PRIME_NUMBER = 0;
 
-    public  List<Long> getPrimeNumbers(int n) {
 
+    public  List<Integer> getPrimeNumbers(int maxNumber) {
 
-        long sum = 0;
-      //  long n = 2000000;
-        List  primeNumbers = new LinkedList<Long>();
-        for (long i = 2; i < n; i++) {
-            primeNumbers.add(i);
+        Integer[] allRangeNumbers = new Integer[maxNumber];
 
-        }
-//weed out the non primes by finding mutiples
+        allRangeNumbers = getAllValuesFromRange(allRangeNumbers,maxNumber);
 
-        for (int j = 2; j < n; j++) {
-            if (primeNumbers.get(j) !=ZERO )//is true
+        for (int j = MIN_PRIME_NUMBER; j < maxNumber; j++)
+        {
+            if (allRangeNumbers[j]!=0)//is true
             {
-                for (int p = 2; (p * j) < n; p++) {
-                    primeNumbers.set( p*j, 0);
-                    //primeNumbers(p*j);
-                    //e[p * j] = false;
+                for (int p = MIN_PRIME_NUMBER; (p*j) < maxNumber; p++)
+                {
+                    allRangeNumbers[p * j] = NON_PRIME_NUMBER;
                 }
             }
         }
 
-        return primeNumbers;
+        List<Integer> primesList = removeDivisors(allRangeNumbers,maxNumber);
+
+        return primesList;
+
     }
 
-    public  Boolean[] getPrimeNumbers2(int n) {
+    private Integer[] getAllValuesFromRange(Integer[] allRangeNumbers,int maxNumber){
 
-        long sum = 0;
-        //long n = 2000000;
-        Boolean[] e = new Boolean[n]; //by default they're all false
-        for (int i = 2; i < n; i++)
+        for (int i = MIN_PRIME_NUMBER; i < maxNumber; i++)
         {
-            e[i] = true;//set all numbers to true
+            allRangeNumbers[i] = i;
         }
-//weed out the non primes by finding mutiples
-        for (int j = 2; j < n; j++)
-        {
-            if (e[j])//is true
-            {
-                for (int p = 2; (p*j) < n; p++)
-                {
-                    e[p * j] = false;
-                }
+
+        return allRangeNumbers;
+    }
+
+    /**
+     *
+     * @param allRangeNumbers
+     * @param maxNumber
+     * @return
+     */
+    private  List<Integer> removeDivisors(Integer[] allRangeNumbers,int maxNumber){
+
+        List<Integer> primesList = new LinkedList<>();
+
+        for(int j = MIN_PRIME_NUMBER; j < maxNumber; j++){
+            if(allRangeNumbers[j]!= NON_PRIME_NUMBER){
+                primesList.add(allRangeNumbers[j]);
+
             }
         }
 
-        return e;
+        return primesList;
 
     }
 
