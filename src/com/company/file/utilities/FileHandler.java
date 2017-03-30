@@ -1,37 +1,63 @@
 package com.company.file.utilities;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.util.Scanner;
 
 public class FileHandler {
 
-	/**
-	 * 
-	 * @return Array of lines as strings
-	 */
-	public static String[] readFile(String fileName) {
+	private static final String outputFile = "sredni2_out.txt";
 
-		String[] ArraysOfStrings = null;
+	public static int[] readFile(String fileName) {
+
+		int[] arrayOfNumbers = null;
+		Scanner scanner = null;
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(fileName));
-			StringBuilder sb = new StringBuilder();
-			String line = br.readLine();
-			while (line != null) {
-				sb.append(line);
-				sb.append(System.lineSeparator());
-				line = br.readLine();
+			scanner = new Scanner(new File(fileName));
+			 arrayOfNumbers = new int [getSizeOfArray(scanner)];
+			int i = 0;
+			while(scanner.hasNextInt()){
+				arrayOfNumbers[i++] = scanner.nextInt();
 			}
-			String entryFileString = sb.toString();
-			ArraysOfStrings = entryFileString.split(" ");
-			entryFileString = entryFileString.replaceAll("\\r?\\n"," ");
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-			return ArraysOfStrings;
+
+			if(scanner!= null){
+				scanner.close();
+			}
+
+			return arrayOfNumbers;
+		}
+
+	}
+
+
+	private static int getSizeOfArray(Scanner scanner){
+		scanner.nextInt(); //First number is not used in program
+		int rowsCount = scanner.nextInt();
+		return rowsCount * 2;
+	}
+
+
+	public static void writeToOutputFile(String resultNumber){
+
+		Writer output = null;
+
+		try {
+			output = new BufferedWriter(new FileWriter(outputFile));
+			output.write(resultNumber + "\n");
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				output.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 	}
