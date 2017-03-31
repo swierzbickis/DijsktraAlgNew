@@ -6,18 +6,19 @@ import java.util.Scanner;
 
 public class FileHandler {
 
-	public static int[] readFile(String fileName) {
+	public static InputFileData readFile(String fileName,InputFileData inputData) {
 
 		int[] arrayOfNumbers = null;
 		Scanner scanner = null;
 		try {
 			scanner = new Scanner(new File(fileName));
+			inputData.setPrimeNumberRange(getCountOfDigits(scanner));
 			 arrayOfNumbers = new int [getSizeOfArray(scanner)];
 			int i = 0;
 			while(scanner.hasNextInt()){
 				arrayOfNumbers[i++] = scanner.nextInt();
 			}
-
+			inputData.setInputParameters(arrayOfNumbers);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -28,14 +29,30 @@ public class FileHandler {
 				scanner.close();
 			}
 
-			return arrayOfNumbers;
+			return inputData;
 		}
 
 	}
 
+	/**
+	 * Reads the first number from input file
+	 * @param scanner
+	 * @return
+	 */
+	private static int getCountOfDigits(Scanner scanner){
+		int digitsCount = scanner.nextInt(); //First number is not used in program
+		return digitsCount;
+	}
 
+	/**
+	 * Reads the second number from input file which describes number of rows.
+	 * Then multiplies this value by two , because in each line there are two numbers
+	 * which describes source and dest nodes.
+	 * @param scanner
+	 * @return
+	 */
 	private static int getSizeOfArray(Scanner scanner){
-		scanner.nextInt(); //First number is not used in program
+		//scanner.nextInt(); //First number is not used in program
 		int rowsCount = scanner.nextInt();
 		return rowsCount * 2;
 	}

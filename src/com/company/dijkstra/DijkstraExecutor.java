@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class DijkstraExecutor {
 
-    private static final String OUTPUT_FILE = "sredni2_out.txt";
+    private static final String OUTPUT_FILE = "outputFile.txt";
     Graph dijsktraGraph;
     List <String> resultNumbers = new ArrayList<>();
 
@@ -30,11 +30,11 @@ public class DijkstraExecutor {
     public void executeDijkstra(List<Integer> primeNumbers, int[] inputParameters) {
 
         long startTime = System.currentTimeMillis();
-        // Graph dijsktraGraph = GraphBuilder.buildGraph(primeNumbers);
+        dijsktraGraph = GraphBuilder.buildGraph(primeNumbers);
         TimerHelper.printTime(startTime);
-        calcDijkstraForInputParams(primeNumbers, inputParameters);
         startTime = System.currentTimeMillis();
-        // dijsktraGraph = DijsktraCalculator.calculateShortestPathFromSrc(dijsktraGraph, dijsktraGraph.getNodes().get(1));
+        calcDijkstraForInputParams(primeNumbers, inputParameters);
+
         TimerHelper.printTime(startTime);
         saveResultIntoFile();
         dijsktraGraph.getNodes();
@@ -55,7 +55,7 @@ public class DijkstraExecutor {
 
     private void addResultToList(int[] inputParameters, int destNodeIndex){
         Node destNode = dijsktraGraph.getNodeByItsNumber(inputParameters[destNodeIndex]);
-        printShortestPathInfo(destNode);
+      //  printShortestPathInfo(destNode);
         resultNumbers.add( ( destNode.getDistance().toString() ) );
     }
 

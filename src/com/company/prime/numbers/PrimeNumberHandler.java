@@ -1,67 +1,71 @@
 package com.company.prime.numbers;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
- *Class returns list of prime numbers from min value to max value given by the user.
- * Range of the numbers are <MIN_VALUE,MAX_VALUE> . Max value is also included
+ * Created by Sebek on 2017-03-25.
  */
 public class PrimeNumberHandler {
 
-    private static long MIN_NUMBER = 2; //value given from task description
-
-    /**
-     * Method returns list of prime numbers from min value to max value given by the user.
-     * @param maxNumber  The maximum value which describes the range of the values included in list.
-     * @return list of prime numbers
-     */
-    public List<Long> getPrimeNumbers(long maxNumber){
-
-        List<Long>  primeNumbersList= initAllNumbers(maxNumber);
-        double borderValue = Math.floor(Math.sqrt(maxNumber));
-        primeNumbersList= removeAllDivisors(primeNumbersList,borderValue);
-        return primeNumbersList;
-    }
-
-    private List<Long> initAllNumbers(long maxNumber){
-        List<Long>  primeNumbersList= new ArrayList<>();
-
-        for(long i =MIN_NUMBER; i<=maxNumber ; i++){
-            primeNumbersList.add(i);
-        }
-        return primeNumbersList;
-    }
+    private static final int MIN_PRIME_NUMBER =2;
+    private static final int NON_PRIME_NUMBER = 0;
 
 
-    private List<Long>  removeAllDivisors(List<Long>  primeNumbersList, double borderValue){
+    public  List<Integer> getPrimeNumbers(int maxNumber) {
 
-        Long currentNumber = primeNumbersList.get(0); // gets the first number to be checked ( It will be number =2 )
-        while(currentNumber <= borderValue){ // Loops untill the current number is less or equal to border value
-            primeNumbersList = removeDivisorsForValue(primeNumbersList,currentNumber);
-            currentNumber ++;
+        Integer[] allRangeNumbers = new Integer[maxNumber];
+
+        allRangeNumbers = getAllValuesFromRange(allRangeNumbers,maxNumber);
+
+        for (int j = MIN_PRIME_NUMBER; j < maxNumber; j++)
+        {
+            if (allRangeNumbers[j]!=0)//is true
+            {
+                for (int p = MIN_PRIME_NUMBER; (p*j) < maxNumber; p++)
+                {
+                    allRangeNumbers[p * j] = NON_PRIME_NUMBER;
+                }
+            }
         }
 
-        return primeNumbersList;
+        List<Integer> primesList = removeDivisors(allRangeNumbers,maxNumber);
+
+        return primesList;
+
+    }
+
+    private Integer[] getAllValuesFromRange(Integer[] allRangeNumbers,int maxNumber){
+
+        for (int i = MIN_PRIME_NUMBER; i < maxNumber; i++)
+        {
+            allRangeNumbers[i] = i;
+        }
+
+        return allRangeNumbers;
     }
 
     /**
      *
-     * @param primeNumbersList
-     * @param startValue
+     * @param allRangeNumbers
+     * @param maxNumber
+     * @return
      */
-    private  List<Long> removeDivisorsForValue(List<Long>  primeNumbersList, long startValue){
+    private  List<Integer> removeDivisors(Integer[] allRangeNumbers,int maxNumber){
 
-        for (Iterator<Long> iterator = primeNumbersList.iterator(); iterator.hasNext(); ) {
-            Long currNumber = iterator.next();
-            if(currNumber % startValue ==0 && currNumber != startValue ){ // It cannot remove currently checked number
-                iterator.remove();
+        List<Integer> primesList = new LinkedList<>();
+
+        for(int j = MIN_PRIME_NUMBER; j < maxNumber; j++){
+            if(allRangeNumbers[j]!= NON_PRIME_NUMBER){
+                primesList.add(allRangeNumbers[j]);
+
             }
         }
-        return primeNumbersList;
+
+        return primesList;
 
     }
+
+
+
 
 }
