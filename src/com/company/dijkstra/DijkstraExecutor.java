@@ -9,6 +9,7 @@ import com.company.helpers.TimerHelper;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,7 +18,10 @@ import java.util.List;
  */
 public class DijkstraExecutor {
 
+    private static final String OUTPUT_FILE = "sredni2_out.txt";
     Graph dijsktraGraph;
+    List <String> resultNumbers = new ArrayList<>();
+
 
     public DijkstraExecutor(Graph dijsktraGraph) {
         this.dijsktraGraph = dijsktraGraph;
@@ -32,26 +36,41 @@ public class DijkstraExecutor {
         startTime = System.currentTimeMillis();
         // dijsktraGraph = DijsktraCalculator.calculateShortestPathFromSrc(dijsktraGraph, dijsktraGraph.getNodes().get(1));
         TimerHelper.printTime(startTime);
+        saveResultIntoFile();
         dijsktraGraph.getNodes();
 
     }
 
     private void calcDijkstraForInputParams(List<Integer> primeNumbers, int[] inputParameters) {
 
-        for (int i = 2; i < inputParameters.length; i += 2) {
+        for (int i = 0; i < inputParameters.length; i += 2) {
             Integer srcNodeNumber = inputParameters[i];
             dijsktraGraph = DijsktraCalculator.calculateShortestPathFromSrc(dijsktraGraph,
                     dijsktraGraph.getNodeByItsNumber(srcNodeNumber));
             int destNodeIndex = i + 1;
-            saveResultIntoFile(inputParameters, destNodeIndex);
+            addResultToList(inputParameters, destNodeIndex);
         }
 
     }
 
-    private void saveResultIntoFile(int[] inputParameters, int destNodeIndex) {
-        Node resultNode = dijsktraGraph.getNodeByItsNumber(inputParameters[destNodeIndex]);
-        System.out.println(resultNode.getDistance().toString());
-        FileHandler.writeToOutputFile(resultNode.getDistance().toString());
+    private void addResultToList(int[] inputParameters, int destNodeIndex){
+        Node destNode = dijsktraGraph.getNodeByItsNumber(inputParameters[destNodeIndex]);
+        printShortestPathInfo(destNode);
+        resultNumbers.add( ( destNode.getDistance().toString() ) );
+    }
+
+    private void printShortestPathInfo(Node destNode){
+       List<Node> shortestPath =  destNode.getShortestPath();
+        System.out.println("Shortest path to node: " + destNode.getNumber());
+        System.out.println("Path cost: " + destNode.getDistance());
+       for(Node n : shortestPath){
+           System.out.println(n.getNumber());
+       }
+
+    }
+
+    private void saveResultIntoFile() {
+        FileHandler.writeToOutputFile(resultNumbers,OUTPUT_FILE);
     }
 
 }

@@ -1,11 +1,10 @@
 package com.company.file.utilities;
 
 import java.io.*;
+import java.util.List;
 import java.util.Scanner;
 
 public class FileHandler {
-
-	private static final String outputFile = "sredni2_out.txt";
 
 	public static int[] readFile(String fileName) {
 
@@ -42,22 +41,31 @@ public class FileHandler {
 	}
 
 
-	public static void writeToOutputFile(String resultNumber){
+	public static void writeToOutputFile(List<String> resultNumbers,String outputFile){
 
-		Writer output = null;
+		FileWriter fw = null;
 
 		try {
-			output = new BufferedWriter(new FileWriter(outputFile));
-			output.write(resultNumber + "\n");
-		}catch (IOException e) {
+			fw = new FileWriter(outputFile);
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		finally {
-			try {
-				output.close();
-			} catch (IOException e) {
-				e.printStackTrace();
+
+		BufferedWriter bw = new BufferedWriter(fw);
+		try {
+			for(String resultNumber : resultNumbers){
+				bw.write(resultNumber);
+				bw.newLine();
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			bw.close();
+			fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
 	}
