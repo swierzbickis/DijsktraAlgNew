@@ -15,7 +15,7 @@ public class DijsktraCalculator {
 
     public static Graph calculateShortestPathFromSrc(Graph graph, Node source){
 
-        source.setDistance(0l);
+        source.setDistance(0);
 
         Set<Node> settledNodes = new HashSet<>();
         Set<Node> unSettledNodes = new HashSet<>();
@@ -26,10 +26,10 @@ public class DijsktraCalculator {
             Node currentNode = getLowestDistanceNode(unSettledNodes);
             unSettledNodes.remove(currentNode);
 
-            for (Map.Entry< Node, Long> adjacencyPair:
+            for (Map.Entry< Node, Integer> adjacencyPair:
                     currentNode.getAdjacentNodes().entrySet()) {
                 Node adjacentNode = adjacencyPair.getKey();
-                Long edgeWeight = adjacencyPair.getValue();
+                Integer edgeWeight = adjacencyPair.getValue();
                 if(!settledNodes.contains(adjacentNode)){
                     CalculateMinimumDistance(adjacentNode,edgeWeight,currentNode);
                     unSettledNodes.add(adjacentNode);
@@ -42,9 +42,9 @@ public class DijsktraCalculator {
 
     private static Node getLowestDistanceNode(Set < Node > unsettledNodes) {
         Node lowestDistanceNode = null;
-        Long lowestDistance = Long.MAX_VALUE;
+        Integer lowestDistance = Integer.MAX_VALUE;
         for (Node node: unsettledNodes) {
-            Long nodeDistance = node.getDistance();
+            Integer nodeDistance = node.getDistance();
             if (nodeDistance < lowestDistance) {
                 lowestDistance = nodeDistance;
                 lowestDistanceNode = node;
@@ -54,8 +54,8 @@ public class DijsktraCalculator {
     }
 
     private static void CalculateMinimumDistance(Node evaluationNode,
-                                                 Long edgeWeigh, Node sourceNode) {
-        Long sourceDistance = sourceNode.getDistance();
+                                                 Integer edgeWeigh, Node sourceNode) {
+        Integer sourceDistance = sourceNode.getDistance();
         if (sourceDistance + edgeWeigh < evaluationNode.getDistance()) {
             evaluationNode.setDistance(sourceDistance + edgeWeigh);
 
