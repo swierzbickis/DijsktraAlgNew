@@ -19,7 +19,7 @@ public class PrimeNumberHandler {
 
         for (int j = MIN_PRIME_NUMBER; j < maxNumber; j++)
         {
-            if (allRangeNumbers[j]!=0)//is true
+            if (allRangeNumbers[j]!=0)
             {
                 for (int p = MIN_PRIME_NUMBER; (p*j) < maxNumber; p++)
                 {

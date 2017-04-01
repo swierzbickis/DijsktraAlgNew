@@ -28,8 +28,6 @@ public class EdgeBuilder {
             setNumberPadding(srcNodeDigits,destNodeDigits);
         }
 
-
-
         int notEqDigitsCounter =0;
         int diffDigitIndex = 0;
         for(int i=0;i<srcNodeDigits.size();i++){

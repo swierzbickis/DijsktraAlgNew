@@ -8,11 +8,11 @@ import java.text.NumberFormat;
  */
 public class TimerHelper {
 
-    public static void printTime(long startTime){
+    public static void printTime(String outputMessage,long startTime){
 
         long estimatedTime = System.currentTimeMillis() - startTime;
         NumberFormat formatter = new DecimalFormat("#0.00000");
-        System.out.println("Execution time is " + formatter.format((estimatedTime) / 1000d) + " seconds");
+        System.out.println(outputMessage + formatter.format((estimatedTime) / 1000d) + " seconds");
        // int timeLapsed =  (int) estimatedTime / 1000;
       //  System.out.println("GRAPH BUILDED in time: " +timeLapsed );
     }

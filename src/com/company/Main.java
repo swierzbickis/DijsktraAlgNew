@@ -7,6 +7,7 @@ import com.company.graphs.builders.EdgeBuilder;
 import com.company.graphs.builders.GraphBuilder;
 import com.company.graphs.model.Graph;
 import com.company.graphs.model.Node;
+import com.company.helpers.TimerHelper;
 import com.company.prime.numbers.PrimeNumberHandler;
 
 import java.math.BigInteger;
@@ -14,12 +15,10 @@ import java.util.List;
 
 public class Main {
 
-    private static final String ENTRY_FILE_NAME = "inputFile.txt";
 
     public static void main(String[] args) {
         InputFileData inputData = new InputFileData();
-        inputData = FileHandler.readFile(ENTRY_FILE_NAME,inputData);
-
+        inputData = FileHandler.readFile(inputData);
 
         PrimeNumberHandler e = new PrimeNumberHandler();
 
@@ -28,16 +27,14 @@ public class Main {
 
 
         List<Integer> primeNumbers =  e.getPrimeNumbers(rangeofPrimeNumbers.intValue());
-        System.out.println(primeNumbers.size());
 
+        long startTime = System.currentTimeMillis();
         Graph dijsktraGraph = GraphBuilder.buildGraph(primeNumbers);
+        TimerHelper.printTime("Graph builded in time: ",startTime);
+
         DijkstraExecutor dijkstra =  new DijkstraExecutor(dijsktraGraph);
         dijkstra.executeDijkstra(primeNumbers, inputData.getInputParameters());
 
-
-
-
-        EdgeBuilder.buildEdge(new Node(3), new Node(103));
 
     }
 

@@ -18,7 +18,6 @@ import java.util.List;
  */
 public class DijkstraExecutor {
 
-    private static final String OUTPUT_FILE = "outputFile.txt";
     Graph dijsktraGraph;
     List <String> resultNumbers = new ArrayList<>();
 
@@ -29,13 +28,11 @@ public class DijkstraExecutor {
 
     public void executeDijkstra(List<Integer> primeNumbers, int[] inputParameters) {
 
+
         long startTime = System.currentTimeMillis();
-        dijsktraGraph = GraphBuilder.buildGraph(primeNumbers);
-        TimerHelper.printTime(startTime);
-        startTime = System.currentTimeMillis();
         calcDijkstraForInputParams(primeNumbers, inputParameters);
 
-        TimerHelper.printTime(startTime);
+        TimerHelper.printTime("Dijkstra executed in : " , startTime);
         saveResultIntoFile();
         dijsktraGraph.getNodes();
 
@@ -43,12 +40,14 @@ public class DijkstraExecutor {
 
     private void calcDijkstraForInputParams(List<Integer> primeNumbers, int[] inputParameters) {
 
+
         for (int i = 0; i < inputParameters.length; i += 2) {
             Integer srcNodeNumber = inputParameters[i];
             dijsktraGraph = DijsktraCalculator.calculateShortestPathFromSrc(dijsktraGraph,
                     dijsktraGraph.getNodeByItsNumber(srcNodeNumber));
             int destNodeIndex = i + 1;
             addResultToList(inputParameters, destNodeIndex);
+            setDistancesToInfinity(dijsktraGraph);
         }
 
     }
@@ -57,6 +56,14 @@ public class DijkstraExecutor {
         Node destNode = dijsktraGraph.getNodeByItsNumber(inputParameters[destNodeIndex]);
       //  printShortestPathInfo(destNode);
         resultNumbers.add( ( destNode.getDistance().toString() ) );
+    }
+
+    private void setDistancesToInfinity(Graph dijsktraGraph){
+        List<Node> nodes = dijsktraGraph.getNodes();
+        for(Node n : nodes){
+            n.setDistance(Integer.MAX_VALUE);
+        }
+
     }
 
     private void printShortestPathInfo(Node destNode){
@@ -70,7 +77,7 @@ public class DijkstraExecutor {
     }
 
     private void saveResultIntoFile() {
-        FileHandler.writeToOutputFile(resultNumbers,OUTPUT_FILE);
+        FileHandler.writeToOutputFile(resultNumbers);
     }
 
 }

@@ -6,12 +6,15 @@ import java.util.Scanner;
 
 public class FileHandler {
 
-	public static InputFileData readFile(String fileName,InputFileData inputData) {
+	private static final String ENTRY_FILE_NAME = "inputFile.txt";
+	private static final String OUTPUT_FILE_NAME = "outputFile.txt";
+
+	public static InputFileData readFile(InputFileData inputData) {
 
 		int[] arrayOfNumbers = null;
 		Scanner scanner = null;
 		try {
-			scanner = new Scanner(new File(fileName));
+			scanner = new Scanner(new File(ENTRY_FILE_NAME));
 			inputData.setPrimeNumberRange(getCountOfDigits(scanner));
 			 arrayOfNumbers = new int [getSizeOfArray(scanner)];
 			int i = 0;
@@ -52,18 +55,17 @@ public class FileHandler {
 	 * @return
 	 */
 	private static int getSizeOfArray(Scanner scanner){
-		//scanner.nextInt(); //First number is not used in program
 		int rowsCount = scanner.nextInt();
 		return rowsCount * 2;
 	}
 
 
-	public static void writeToOutputFile(List<String> resultNumbers,String outputFile){
+	public static void writeToOutputFile(List<String> resultNumbers){
 
 		FileWriter fw = null;
 
 		try {
-			fw = new FileWriter(outputFile);
+			fw = new FileWriter(OUTPUT_FILE_NAME);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
